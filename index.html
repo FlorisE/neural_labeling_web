@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NeuralLabeling: A versatile toolset for labeling vision datasets using Neural Radiance Fields</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="top">
+      <a href="https://unit.aist.go.jp/icps/icps-am/en/">Automation Research Team</a>
+    </div>
+    <div id="main">
+      <h1>NeuralLabeling: A versatile toolset for labeling vision datasets using Neural Radiance Fields</h1>
+      <div class="centertext">Floris Erich<sup>1</sup>, Naoya Chiba<sup>2</sup>, Yusuke Yoshiyasu<sup>1</sup>, Noriaki Ando<sup>1</sup>, Ryo Hanai<sup>1</sup>, Yukiyasu Domae<sup>1</sup></div>
+      <div class="centertext">
+        1: National Institute of Advanced Industrial Science and Technology<br />
+        2: Tohoku University
+      </div>
+      <div class="logos">
+        <a href="https://www.aist.go.jp/index_en.html"><img src="images/logo.png" alt="AIST logo" /></a>
+        <a href="https://www.tohoku.ac.jp/en/"><img src="images/tohoku.png" alt="Tohoku University logo" /></a>
+      </div>
+      <div class="centertext">
+        <div class="links">
+          <a>Paper (arXiv)</a>
+          <a>Dishwasher30k Data</a>
+          <a href="https://www.github.com/FlorisE/neural-labeling" alt="Neural Labeling GitHub">Code</a>
+        </div>
+      </div>
+      <div class="centertext">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/-5lZR6Xzh8w?si=YGN9PuMRsD1F0WFn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <p>Under review</p>
+      <p>Abstract</p>
+      <p>
+            We present NeuralLabeling, a labeling approach and toolset for annotating a scene using either bounding boxes or meshes and generating segmentation masks, affordance maps, 2D bounding boxes, 3D bounding boxes, 6DOF object poses, depth maps and object meshes.
+            NeuralLabeling uses Neural Radiance Fields (NeRF) as renderer, allowing labeling to be performed using 3D spatial tools while incorporating geometric clues such as occlusions, relying only on images captured from multiple viewpoints as input. 
+            To demonstrate the applicability of NeuralLabeling to a practical problem in robotics, we added ground truth depth maps to 30000 frames of transparent object RGB and noisy depth maps of glasses placed in a dishwasher captured using an RGBD sensor, yielding the Dishwasher30k dataset.
+            We show that training a simple deep neural network with supervision using the annotated depth maps yields a higher reconstruction performance than training with the previously applied weakly supervised approach.
+      </p>
+      <p>Acknowledgements</p>
+      <p>
+        This work was supported by JST [Moonshot R&amp;D][Grant Number JPMJMS2031].
+        This research is subsidized by New Energy and Industrial Technology Development Organization (NEDO) under a project JPNP20016.
+        This paper is one of the achievements of joint research with and is jointly owned copyrighted material of ROBOT Industrial Basic Technology Collaborative Innovation Partnership.
+      </p>
+      <div class="logos">
+        <a href="https://www.jst.go.jp/moonshot/en/index.html"><img src="images/moonshot-logo.png" alt="Moonshot logo" /></a>
+        <a href="https://robocip.or.jp/"><img src="images/robocip_logo.svg" alt="Robocip logo" width="455" height="79" /></a>
+      </div>
+      <h2>Method</h2>
+      <div class="centertext">
+      <a href="images/workflow.png"><img src="images/workflow.png" id="workflow" /></a>
+      </div>
+      <h2>Demonstration of outputs</h2>
+      <div class="centertext">
+      <a href="images/demo.png"><img src="images/demo.png" id="demo" /></a>
+      </div>
+      <h2>Dishwasher30k evaluation</h2>
+      <p>We took a U-Net from a previous study that used a weakly supervised training procedure and trained it on a similar dataset using ground truth depth annotations that were generated using NeuralLabeling.</p>
+      <table>
+        <tr>
+          <th>Training regime</th>
+          <th>Modality</th>
+          <th>RMSE (m) ↓</th>
+          <th>MAE (m) ↓</th>
+          <th>Rel ↓</th>
+          <th>1.05 ↑</th>
+          <th>1.10 ↑</th>
+          <th>1.25 ↑</th>
+        </tr>
+        <tr>
+          <td>Joint Bilateral Filter</td>
+          <td>RGBD2Depth</td>
+          <td>0.067</td>
+          <td>0.048</td>
+          <td>0.083</td>
+          <td>0.477</td>
+          <td>0.688</td>
+          <td>0.950</td>
+        </tr>
+        <tr>
+          <td>ClearGrasp</td>
+          <td>RGBD2Depth</td>
+          <td>0.090</td>
+          <td>0.057</td>
+          <td>0.120</td>
+          <td>0.404</td>
+          <td>0.555</td>
+          <td>0.840</td>
+        </tr>
+        <tr>
+          <td>Cyclic adversarial</td>
+          <td>RGBD2RGBD</td>
+          <td>0.061</td>
+          <td>0.040</td>
+          <td>0.072</td>
+          <td>0.528</td>
+          <td>0.767</td>
+          <td>0.940</td>
+        </tr>
+        <tr>
+          <td>Cyclic adversarial</td>
+          <td>Depth2Depth</td>
+          <td>0.058</td>
+          <td>0.035</td>
+          <td>0.061</td>
+          <td>0.589</td>
+          <td>0.861</td>
+          <td>0.954</td>
+        </tr>
+        <tr>
+          <td>Dishwasher30k supervised</td>
+          <td>RGBD2Depth</td>
+          <td><strong>0.037</strong></td>
+          <td>0.023</td>
+          <td>0.039</td>
+          <td>0.725</td>
+          <td>0.880</td>
+          <td><strong>0.959</strong></td>
+        </tr>
+        <tr>
+          <td>Dishwasher30k supervised</td>
+          <td>Depth2Depth</td>
+          <td>0.043</td>
+          <td><strong>0.021</strong></td>
+          <td><strong>0.038</strong></td>
+          <td><strong>0.800</strong></td>
+          <td><strong>0.895</strong></td>
+          <td>0.955</td>
+        </tr>
+        <tr>
+          <td>Dishwasher30k supervised</td>
+          <td>RGB2Depth</td>
+          <td>0.045</td>
+          <td>0.028</td>
+          <td>0.049</td>
+          <td>0.676</td>
+          <td>0.861</td>
+          <td>0.948</td>
+        </tr>
+      </table>
+      <h3>Sample</h3>
+      <p>We generate supervised training data by aligning object models with transparent object NeRF scenes and combining sensor depth with object depth.</p>
+      <div class="centertext">
+        <a href="images/dishwasher_depth.png"><img src="images/dishwasher_depth.png" id="dishwasher" /></a>
+      </div>
+      <h2>Segmentation evaluation</h2>
+      <p>We compare segmentation quality using NeuralLabeling to segmentation quality using Segment Anything (SAM) and XMem in a scenario with heavy occlusions.</p>
+      <p>For SAM we manually annotate the scene using 2D bounding-boxes to indicate the objects to segment, for XMem we use the initial ground truth (gt) segmentation mask as input.</p>
+      <p>NeuralLabeling mostly performs comparably to XMem, while outperforming SAM.</p>
+      <p>NeuralLabeling can generate NeRF2Mesh occlusions, but NeRF depth estimates for transparent surfaces are noisy, causing some areas (e.g. towel) to have a poor segmentation quality.</p>
+      <p>NeuralLabeling can however create high quality segmentation masks for complex fence patterns.</p>
+      <div class="centertext">
+        <a href="images/segmentation.png"><img src="images/segmentation.png" id="segmentation" /></a>
+      </div>
+    </div>
+    <div id="footer">
+      Copyright © National Institute of Advanced Industrial Science and Technology （AIST）<br />
+     （Japan Corporate Number 7010005005425）. All rights reserved.
+    </div>
+  </body>
+</html>
